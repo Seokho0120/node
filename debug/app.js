@@ -1,7 +1,7 @@
 function sayHello() {
   console.log("hi");
-  console.log('seokho')
-  console.log('seokho2')
+  console.log("seokho");
+  console.log("seokho2");
 }
 
 function calculate(x, y) {
@@ -20,3 +20,5 @@ for (let i = 0; i < 10; i++) {
   console.log("count", 1);
   if (i === stop) break;
 }
+
+// test
