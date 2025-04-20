@@ -1,9 +1,20 @@
 import express from "express";
 const app = express();
 
-app.get("/", (req, res, next) => {
-  console.log("get");
-  res.send("hi~");
+app.get("/sky/:id", (req, res, next) => {
+  // console.log("path >>>>>", req.path);
+  // console.log("headers >>>>>", req.headers);
+
+  console.log("params >>>>>", req.params);
+  console.log("params >>>>>", req.params.id);
+  console.log("query >>>>>", req.query.keyword);
+
+  // res.send("hi~");
+  // res.json({ name: "seokho" });
+  // res.sendStatus(400);
+
+  res.setHeader("key", "value");
+  res.status(201).send("created");
 });
 app.listen(8080);
 
