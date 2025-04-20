@@ -1,24 +1,47 @@
 import express from "express";
+
 const app = express();
 
-app.get("/sky/:id", (req, res, next) => {
-  // console.log("path >>>>>", req.path);
-  // console.log("headers >>>>>", req.headers);
-
-  console.log("params >>>>>", req.params);
-  console.log("params >>>>>", req.params.id);
-  console.log("query >>>>>", req.query.keyword);
-
-  // res.send("hi~");
-  // res.json({ name: "seokho" });
-  // res.sendStatus(400);
-
-  res.setHeader("key", "value");
-  res.status(201).send("created");
+// all은 "/api" 에서만 처리가됨, 정확히 명시해야함 /api/* 하면 use랑 똑같긴함
+app.all("/api", (req, res, next) => {
+  console.log("all");
+  next();
 });
-app.listen(8080);
 
-// IP ip 주소로 서버가 네트워크상에 어디있는지 알 수 있음
-// Port 포트는 그 서버의 어떤 어플리케이션에 접속하고 싶은지를 나타냄
-// 컴퓨터에는 IP가 있고 여러개의 Port가 있음
-// 그 포트중에 우리가 관심있는 어플리케이션에 듣고, 접속할 수 있음
+// use는 "/sky" 이후의 모든 url 처리가됨
+app.all("/sky", (req, res, next) => {
+  console.log("use");
+  next();
+});
+
+// TODO: 등록한 미들웨어에서는 항상 next를 하거나 return을 해야함!!
+app.get(
+  "/",
+  (req, res, next) => {
+    console.log("11");
+    // 콜백 함수 하나에서 return 여러번 못함. 무조건 한번만 해야됨 그래서 return을 써야함
+    if (true) {
+      return res.send("Hello-1");
+    }
+    res.send("Hello");
+  },
+  (req, res, next) => {
+    console.log("11-2");
+  }
+);
+
+app.get("/", (req, res, next) => {
+  console.log("22");
+});
+
+// 항상 마지막에 에러처리해야함, 사용자에게 보여주게
+app.use((error, req, res, next) => {
+  res.status(404).send("Not available!!");
+});
+
+app.use((error, req, res, next) => {
+  console.error(error);
+  res.status(500).send("Sorry, try later!");
+});
+
+app.listen(8080);
